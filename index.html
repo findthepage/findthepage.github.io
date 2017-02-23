@@ -17,13 +17,23 @@
       if(lowerLimit < upperLimit){
         var internet = new XMLHttpRequest();
         internet.open("GET", "https://scratch.mit.edu/site-api/comments/user/griffpatch/?page=" + Math.floor((lowerLimit + upperLimit)/2));
-        internet.onreadystatechange = load;
+        internet.onreadystatechange = function(){
+         if(internet.readyState == 4){
+           if(internet.status == 404){
+            upperLimit = Math.floor((lowerLimit + upperLimit)/2);
+           } else {
+             lowerLimit = Math.floor((lowerLimit + upperLimit)/2);
+           }
+         }
+        };
         internet.send();
         
         document.querySelector("#result").innerHTML = "Loading... " + [lowerLimit, upperLimit].join(", ");
       } else {
         document.querySelector("#result").innerHTML = lowerLimit;
       }
+      
+      load();
     }
     </script>
   </body>
