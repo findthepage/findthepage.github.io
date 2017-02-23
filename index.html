@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>Find Page</title>
+    <style>
+      #result{
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="result">Generating Answer...</div>
+    <script>
+    var lowerLimit = 800;
+    var upperLimit = 1000;
+    
+    function load(){
+      if(lowerLimit < upperLimit){
+        var internet = new XMLHttpRequest();
+        internet.open("GET", "https://scratch.mit.edu/site-api/comments/user/griffpatch/?page=" + Math.floor((lowerLimit + upperLimit)/2));
+        internet.onreadystatechange = load;
+        internet.send();
+        
+        document.querySelector("#result").innerHTML = "Loading... " + [lowerLimit, upperLimit].join(", ");
+      } else {
+        document.querySelector("#result").innerHTML = lowerLimit;
+      }
+    }
+    </script>
+  </body>
+</html>
